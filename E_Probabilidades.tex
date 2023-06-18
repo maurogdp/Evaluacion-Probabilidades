@@ -1,0 +1,514 @@
+\documentclass[11pt, letterpaper]{book}
+
+
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath, amsthm}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\usepackage[export]{adjustbox}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{setspace}
+\usepackage{subfig}
+\usepackage{venndiagram}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage{mdframed}
+\usepackage{slashbox}
+
+
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,bbox}
+\usetikzlibrary{decorations.pathreplacing}
+\begin{comment}
+\tikzset{%
+  show curve controls/.style={
+    postaction={
+      decoration={
+        show path construction,
+        curveto code={
+          \draw [blue] 
+            (\tikzinputsegmentfirst) -- (\tikzinputsegmentsupporta)
+            (\tikzinputsegmentlast) -- (\tikzinputsegmentsupportb);
+          \fill [red, opacity=0.5] 
+            (\tikzinputsegmentsupporta) circle [radius=.5ex]
+            (\tikzinputsegmentsupportb) circle [radius=.5ex];
+        }
+      },
+      decorate
+}}}
+\end{comment}
+\usepackage{stackengine}
+\newcommand\xrowht[2][0]{\addstackgap[.5\dimexpr#2\relax]{\vphantom{#1}}}
+
+
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{babel,arrows.meta,decorations.pathmorphing, backgrounds,positioning,fit,petri, shapes, shadows}
+
+\usepackage{tikz,color}
+\usepackage{pgf-pie}
+\usepackage{pgfplots} 
+
+\theoremstyle{plain}% default
+\newtheorem{teo}{Teorema}[section]
+\newtheorem{lem}[teo]{Lema}
+\newtheorem{prop}[teo]{Proposición}
+\newtheorem*{cor}{Corolario}
+\newmdtheoremenv{defi}{Definición}[section]
+\newtheorem{conj}{Conjetura}[section]
+\newtheorem{propi}{Propiedad}[section]
+
+\theoremstyle{definition}
+\newtheorem{ejer}{\textit{Ejercicio}}[section]
+\newtheorem{ejem}{\textit{Ejemplo}}[section]
+\newtheorem*{sol}{Solución}
+
+\theoremstyle{remark}
+\newtheorem{obs}{Observación}[section]
+\newtheorem*{nota}{Nota}
+\newtheorem{caso}{Caso}
+\newtheorem*{tips}{Tips}
+
+
+
+
+\newcommand{\paso}[1]{\hspace{1cm}\linebreak\hspace{1cm}\textit{#1 paso. }}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\makeatletter
+\newenvironment{myminipage}[1]%
+    {\let\@parboxrestore\relax\begin{minipage}{#1}}%
+    {\end{minipage}}
+\makeatother
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcounter{conserva}
+
+\newcounter{question}
+\newif\ifinchoices
+\inchoicesfalse
+\newenvironment{questions}{%
+  \list{\thequestion.\hspace{0.6cm}}%
+  {%
+    \usecounter{question}%
+    \def\question{\inchoicesfalse\item}%
+    \settowidth{\leftmargin}{10.\hskip\labelsep}%
+    \labelwidth\leftmargin\advance\labelwidth-\labelsep
+  }%
+}
+{%
+  \endlist
+}%
+
+\newcounter{choice}
+\renewcommand\thechoice{\Alph{choice}}
+\newcommand\choicelabel{\thechoice)}
+\def\choice{%
+  \ifinchoices
+    % Do nothing
+  \else
+    \startchoices
+  \fi
+  \refstepcounter{choice}%
+  %\ifnum\value{choice}>0\relax
+  %\penalty -50\hskip 1em plus 1em\relax
+  %\fi
+  \ifnum\value{choice}>1{\vspace{-0.2cm}}
+  
+  \fi
+  \choicelabel
+  \nobreak
+  \enskip
+}% choice
+\def\CorrectChoice{%
+  \choice
+  \addanswer{\thequestion}{\thechoice}%
+}
+\let\correctchoice\CorrectChoice
+
+\newcommand{\startchoices}{%
+  \inchoicestrue
+  \setcounter{choice}{0}%
+  \par % Uncomment this to have choices always start a new line
+  % If we're continuing the paragraph containing the question,
+  % then leave a bit of space before the first choice:
+  \ifvmode\else\enskip\fi
+}%
+
+\newbox\allanswers
+\setbox\allanswers=\hbox{}
+\newcommand{\addanswer}[2]{%
+  \global\setbox\allanswers=\hbox{\unhbox\allanswers #1.~#2\quad}%
+}
+\newcommand{\showanswers}{%
+  \vfill
+  \begin{center}
+    Alternativas correctas
+  \end{center}
+  \noindent\unhbox\allanswers
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+
+
+
+
+\author{Mauro Díaz}
+\title{Apuntes\\Probabilidad y estadística descriptiva e inferencial}
+
+\begin{document}
+\pgfplotsset{compat=1.18}
+\begin{center}
+	\textbf{Evaluación Probabilidades\\Diferenciado de probabilidad y estadística descriptiva e inferencial}
+\end{center}
+
+Nombre:$\underline{\hspace{12cm}}$
+
+
+\begin{questions}
+
+
+    \question {\color{gray}(Proceso de admisión 2005).} ¿Cuál es la probabilidad que al lanzar 3 monedas, simultáneamente, 2 sean caras y 1 sea sello?
+	\begin{multicols}{5}
+		\choice $\dfrac{3}{8}$
+		\columnbreak
+		\choice $\dfrac{1}{8}$
+		\columnbreak
+		\choice $\dfrac{2}{8}$
+		\columnbreak
+		\correctchoice $\dfrac{1}{3}$
+		\columnbreak
+		\choice $\dfrac{2}{3}$
+	\end{multicols}
+
+    \question {\color{gray}(Proceso de admisión 2005).} De una tómbola se saca una de 30 bolitas numeradas de 1 a 30. ¿Cuál es la probabilidad de que el número de la bolita extraída sea múltiplo de 4?
+	\begin{multicols}{5}
+		\choice $\dfrac{23}{30}$
+		\columnbreak
+		\choice $\dfrac{4}{30}$
+		\columnbreak
+		\correctchoice $\dfrac{7}{30}$
+		\columnbreak
+		\choice $\dfrac{30}{7}$
+		\columnbreak
+		\choice $\dfrac{30}{23}$
+	\end{multicols}
+
+    \question {\color{gray}(PSU 2004).} En una tómbola hay 11 pelotitas de igual tamaño y peso numeradas del 1 al 11. Las primeras 5 son rojas y las otras pelotitas restantes son negras. La probabilidad de que al sacarr una pelotita al azar, ésta sea \textbf{roja} y \textbf{par} es
+	\begin{multicols}{5}
+		\choice $\dfrac{1}{2}$
+		\columnbreak
+		\choice $\dfrac{2}{5}$
+		\columnbreak
+		\correctchoice $\dfrac{5}{11}$
+		\columnbreak
+		\choice $\dfrac{2}{11}$
+		\columnbreak
+		\choice $\dfrac{1}{4}$
+	\end{multicols}
+
+    \question {\color{gray}(PSU 2021).} Si se lanza un dado común y una moneda, ¿cuál es la probabilidad de que salga cara en la moneda y se obtenga en el dado un número menor o igual que 4?
+	\begin{multicols}{5}
+		\choice $\dfrac{1}{2}+\dfrac{1}{3}$
+		\columnbreak
+		\choice $\dfrac{1}{2}+\dfrac{1}{2}$
+		\columnbreak
+		\correctchoice $\dfrac{1}{2}\cdot \dfrac{1}{3}$
+		\columnbreak
+		\choice $\dfrac{1}{2}\cdot \dfrac{2}{3}$
+	\end{multicols}
+
+    \question {\color{gray}(PSU 2021).} Una caja contiene 10 tarjetas, del mismo tipo, numeradas en forma correlativa del 1 al 10.
+
+    Si se extraen, sin reposición, 3 tarjetas al azar, ¿cuál es la probabilidad de que el producto de los números de las 3 tarjetas sea par?
+        \begin{multicols}{5}
+		\choice $\dfrac{1}{2}$
+		\columnbreak
+		\choice $\dfrac{11}{12}$
+		\columnbreak
+		\correctchoice $\dfrac{1}{12}$
+		\columnbreak
+		\choice $\dfrac{7}{8}$
+		\columnbreak
+		\choice $\dfrac{3}{2}$
+	\end{multicols}
+
+    \question {\color{gray}(PSU 2021).} Se lanzan dos dados comunes. ¿Cuál es la probabilidad de que la suma de los números obtenidos sea 3?
+	\begin{multicols}{5}
+		\choice $\dfrac{2}{6}$
+		\columnbreak
+		\choice $\dfrac{2}{36}$
+		\columnbreak
+		\correctchoice $\dfrac{1}{36}$
+		\columnbreak
+		\choice $\dfrac{1}{2}$
+		\columnbreak
+		\choice $\dfrac{2}{12}$
+	\end{multicols}
+
+    \question {\color{gray}(PSU 2020).} Al lanzar un dado cargado, numerado del 1 al 6 , la probabilidad de que salga un número par es el doble de la probabilidad de que salga un número impar.
+
+    Si se lanza este dado, ¿cuál es la probabilidad de que salga un número impar?
+        \begin{multicols}{5}
+		\choice $\dfrac{1}{9}$
+		\columnbreak
+		\choice $\dfrac{2}{3}$
+		\columnbreak
+		\correctchoice $\dfrac{1}{3}$
+		\columnbreak
+		\choice $\dfrac{1}{4}$
+		\columnbreak
+		\choice $\dfrac{2}{9}$
+	\end{multicols}
+\newpage
+    \question {\color{gray}(PSU 2019).} Dos cursos de un colegio realizan una fiesta para reunir fondos para un viaje de estudios. Se reparten dos tipos de entradas, las del tipo $P$ y las del tipo $Q$. En la tabla adjunta se muestra la distribución de la venta de entradas para el segundo $A$ y el segundo $B$.
+
+    \begin{center}
+    \begin{tabular}{|c|c|c|}\cline{2-3}
+    \multicolumn{1}{c|}{}&\multicolumn{2}{c|}{Cursos}\\ \hline
+    Tipo de entradas&Segundo $A$&Segundo $B$\\ \hline
+    $P$&15&10\\ \hline
+    $Q$&25&30\\ \hline
+    \end{tabular}
+    \end{center}
+    
+    Si se selecciona a una persona al azar de estos dos cursos y se sabe que tiene una entrada del tipo $Q$, ¿cuál es la probabilidad de que sea un estudiante del segundo $B$?\\
+        \begin{multicols}{5}
+		\choice $\dfrac{3}{8}$
+		\columnbreak
+		\choice $\dfrac{6}{11}$
+		\columnbreak
+		\correctchoice $\dfrac{3}{4}$
+		\columnbreak
+		\choice $\dfrac{8}{11}$
+		\columnbreak
+		\choice $\dfrac{1}{30}$
+	\end{multicols}
+
+    \question {\color{gray}(PSU 2019).} En cierto experimento, la probabilidad de que ocurra un suceso $A$ es $p$, mientras que la probabilidad de que ocurra un suceso $B$ es $q$. Si los sucesos $A$ y $B$ son independientes, ¿cuál de las siguientes expresiones representa \textbf{siempre} la probabilidad de que ocurra al menos uno de los dos sucesos?\\
+	
+	\begin{multicols}{3}
+		\choice $p(1-q)$
+		\choice $pq$
+		\columnbreak
+		\correctchoice $p(1-q)+q(1-p)$
+		\choice $(1-p)(1-q)$
+		\columnbreak
+		\choice $p+q-pq$
+	\end{multicols}
+
+    \question {\color{gray}(PSU 2019).} Andrés es el director técnico del equipo de fútbol Los Astros, el cual realiza un estudio estadístico para su próximo encuentro con su rival, el equipo de Los Cometas.
+
+    El estudio de Andrés se centró en la probabilidad que tiene cada uno de los equipos en anotar una cierta cantidad de goles.
+    
+    Los resultados se los presenta a sus jugadores en uno de los entrenamientos en una pizarra como la de la figura adjunta.
+    
+    \begin{center}
+    \begin{tabular}{|r|c|c|c|c|}\hline
+    \backslashbox{Equipos}{Goles}&0&1&2&3\\ \hline
+    Los Astros&$0.19$&$0.37$&$0.30$&$0.14$\\ \hline
+    Los Cometas&$0.43$&$0.30$&$0.14$&$0.13$\\ \hline
+    \end{tabular}
+    \end{center}
+    
+    Según estos datos y considerando que convertir goles por parte de ambos equipos es independiente, ¿cuál de las siguientes expresiones es igual a la probabilidad de que el partido entre estos dos equipos termine en empate?\\
+        
+	
+		\choice $0.19\cdot 0.43$
+		\choice $(0.19\cdot 0.43)+(0.37\cdot 0.30)+(0.30\cdot 0.14)+(0.14\cdot 0.13)$
+		\correctchoice $(0.19\cdot 0.43)\cdot (0.37\cdot 0.30)\cdot (0.14\cdot 0.13)$
+		\choice $(0.37\cdot 0.30)+(0.30\cdot 0.14)+(0.14\cdot 0.13)$
+		\choice $(0.19+0.43)\cdot (0.37+0.30)\cdot (0.30+0.14)\cdot (0.14+0.13)$
+	
+\newpage
+    \question {\color{gray}(PSU 2018).} Se hace una encuesta a un grupo de personas y se les consulta si consumen azúcar o si consumen miel. Los resultados obtenidos se resumen en la tabla adjunta.
+    \begin{center}
+    \begin{tabular}{|c|c|c|}\cline{2-3}
+    \multicolumn{1}{c|}{}&Azúcar&Miel\\ \hline
+    Hombres&25&9\\ \hline
+    Mujeres&10&18\\ \hline
+    \end{tabular}
+    \end{center}
+    
+    Si del grupo se elige una persona al azar, resultando que es hombre y ninguno de los encuestados consume ambos productos, ¿cuál es la probabilidad de que consuma miel?
+        \begin{multicols}{5}
+		\choice $\dfrac{27}{34}$
+		\columnbreak
+		\choice $\dfrac{27}{62}$
+		\columnbreak
+		\correctchoice $\dfrac{34}{62}$
+		\columnbreak
+		\choice $\dfrac{9}{34}$
+		\columnbreak
+		\choice $\dfrac{9}{62}$
+	\end{multicols}
+
+    \question {\color{gray}(PSU 2018).} En un curso de 90 estudiantes, $\dfrac{2}{5}$ obtuvieron buenos resultados en el examen de matemática, $\dfrac{13}{30}$ en el examen de lenguaje y $\dfrac{1}{9}$ en ambos. Si se selecciona a un estudiante al azar de este curso, ¿cuál es la probabilidad de que este tenga un buen resultado en solo un examen?
+	\begin{multicols}{5}
+		\choice $\dfrac{1}{36}+\dfrac{1}{39}$
+		\columnbreak
+		\choice $\dfrac{1}{55}$
+		\columnbreak
+		\correctchoice $\dfrac{55}{90}$
+		\columnbreak
+		\choice $\dfrac{1}{75}$
+		\columnbreak
+		\choice $\dfrac{26}{150}$
+	\end{multicols}
+
+    \question {\color{gray}(PSU 2018).} En el hexágono regular de la figura adjunta se marcan al azar tres de sus vértices.
+
+    \begin{center}
+    \begin{tikzpicture}
+       \newdimen\R
+       \R=2cm
+       \draw (0:\R) \foreach \x in {60,120,...,360} {  -- (\x:\R) };
+       \foreach \x/\l/\p in
+         { 60/{D}/above,
+          120/{E}/above,
+          180/{F}/left,
+          240/{A}/below,
+          300/{B}/below,
+          360/{C}/right
+         }
+         \node[inner sep=1pt,circle,draw,fill,label={\p:\l}] at (\x:\R) {};
+    \end{tikzpicture}
+    \end{center}
+    
+    ¿Cuál es la probabilidad de que con estos vértices se forme un triángulo equilátero?
+        \begin{multicols}{5}
+		\choice $\dfrac{1}{10}$
+		\columnbreak
+		\choice $\dfrac{3}{10}$
+		\columnbreak
+		\correctchoice $\dfrac{1}{2}$
+		\columnbreak
+		\choice $\dfrac{1}{4}$
+		\columnbreak
+		\choice $\dfrac{1}{3}$
+	\end{multicols}
+
+    \question {\color{gray}(PSU 2016).} En una bolsa hay en total 22 bolitas del mismo tipo numeradas en forma correlativa del 1 al 22. Si se extrae al azar una bolita de la bolsa, ¿cuál es la probabilidad de que esta tenga un número de un dígito o un número múltiplo de 10?
+	\begin{multicols}{5}
+		\choice $\dfrac{1}{9}\cdot \dfrac{1}{2}$
+		\columnbreak
+		\choice $\dfrac{9}{22}+\dfrac{2}{21}$
+		\columnbreak
+		\correctchoice $\dfrac{1}{9}+\dfrac{1}{2}$
+		\columnbreak
+		\choice $\dfrac{9}{22}+\dfrac{2}{22}$
+		\columnbreak
+		\choice $\dfrac{9}{22}+\dfrac{1}{22}$
+	\end{multicols}
+\newpage
+	\question {\color{gray}(PSU 2014).} La probabilidad de que un  feriante venda frutas un día determinado dado que está lloviendo es $\dfrac{1}{3}$ . Si la probabilidad de que venda y llueva ese día es $\dfrac{1}{5}$, ¿cuál es la probabilidad de que \textbf{NO} llueva ese día?
+
+	\begin{multicols}{5}
+		\choice $\dfrac{14}{15}$
+		\columnbreak
+		\choice $\dfrac{1}{15}$
+		\columnbreak
+		\correctchoice $\dfrac{2}{3}$
+		\columnbreak
+		\choice $\dfrac{4}{5}$
+        \columnbreak
+		\choice $\dfrac{2}{5}$
+	\end{multicols}
+
+    \question {\color{gray}(PSU 2014).} Se lanza una moneda y dos dados comunes, uno a continuación del otro. ¿Cuál es la probabilidad de que en la moneda salga cara y de que el número del primer dado sea menor que el número del segundo?
+	
+	\begin{multicols}{5}
+		\choice $\dfrac{1}{4}$
+		\columnbreak
+		\choice $\dfrac{33}{36}$
+		\columnbreak
+		\correctchoice $\dfrac{21}{72}$
+		\columnbreak
+		\choice $\dfrac{15}{72}$
+		\columnbreak
+		\choice $\dfrac{1}{24}$
+	\end{multicols}
+
+\question {\color{gray}(PSU 2012).} Una urna contiene en total 48 fichas del mismo tipo, la mitad de ellas son de color verde y la otra mitad de color rojo. Martín saca la mitad de las fichas verdes y la tercera parte de las fichas rojas, sin devolverlas a la urna. Si luego Marcela saca una ficha de la urna, al azar, ¿cuál es la probabilidad de que esta ficha sea de color rojo?
+	\begin{multicols}{5}
+		\choice $\dfrac{1}{16}$
+		\columnbreak
+		\choice $\dfrac{8}{20}$
+		\columnbreak
+		\correctchoice $\dfrac{16}{24}$
+		\columnbreak
+		\choice $\dfrac{16}{28}$
+		\columnbreak
+		\choice $\dfrac{1}{8}$
+	\end{multicols}
+
+    \question {\color{gray}(PSU 2011).} Si se lanza una moneda tres veces, ¿cuál(es) de las siguientes afirmaciones es (son) verdadera(s)?
+    \begin{itemize}
+    \item[I.]Es más probable obtener menos de dos caras que exactamente un sello.
+    \item[II.]Es más probable obtener exactamente un sello que exactamente dos sellos.
+    \item[III.]Es más probable obtener menos de dos caras que exactamente dos sellos.
+    \end{itemize}	
+    \begin{multicols}{5}
+		\choice Solo I
+		\columnbreak
+		\choice Solo II
+		\columnbreak
+		\correctchoice Solo I y II
+		\columnbreak
+		\choice Solo I y III
+		\columnbreak
+		\choice Ninguna de ellas.
+	\end{multicols}
+
+    \question {\color{gray}(PSU 2008).} Se tienen tres cajas, A, B y C, cada una con fichas del mismo tipo. La caja A contiene 4 fichas blancas y 6 rojas, la caja B contiene 5 fichas blancas y 7 rojas y la caja C contiene 9 fichas blancas y 6 rojas. Si se saca al azar una ficha de cada caja, la probabilidad de que las tres fichas sean \textbf{rojas} es
+
+    \begin{multicols}{5}
+		\choice $\dfrac{7}{50}$
+		\columnbreak
+		\choice $\dfrac{1}{8}$
+		\columnbreak
+		\correctchoice $\dfrac{1}{252}$
+		\columnbreak
+		\choice $\dfrac{19}{12}$
+		\columnbreak
+		\choice $\dfrac{19}{37}$
+	\end{multicols}
+
+    \question {\color{gray}(PSU 2009).} Al lanzar cuatro dados comunes, ¿cuál es la probabilidad de que en todos los dados salga un 4?
+	\begin{multicols}{5}
+		\choice $\dfrac{1}{1296}$
+		\columnbreak
+		\choice $\dfrac{1}{6}$
+		\columnbreak
+		\correctchoice $\dfrac{4}{6}$
+		\columnbreak
+		\choice $\dfrac{4}{1296}$
+		\columnbreak
+		\choice Ninguno de los valores anteriores.
+	\end{multicols}
+
+\end{questions}
+
+\end{document}
+
+
+
